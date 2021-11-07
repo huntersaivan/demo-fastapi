@@ -13,7 +13,7 @@ router = APIRouter(
 
 @router.get("/", response_model=List[schemas.PostOut])
 # @router.get("/")
-def get_posts(db: Session = Depends(get_db),
+async def get_posts(db: Session = Depends(get_db),
               current_user: int = Depends(oauth2.get_current_user), limit: int = 10, skip: int = 0, search: Optional[str] = ""):
 
     # posts = exe_cursor_to_dict(cursor, """select * from posts""")
@@ -27,7 +27,7 @@ def get_posts(db: Session = Depends(get_db),
 
 
 @router.get("/{id}", response_model=schemas.PostOut)
-def get_post(id: int, db: Session = Depends(get_db),
+async def get_post(id: int, db: Session = Depends(get_db),
              current_user: int = Depends(oauth2.get_current_user)):
 
     # post = exe_cursor_to_dict(cursor, f"""select * from posts where id = {id}""")
@@ -48,7 +48,7 @@ def get_post(id: int, db: Session = Depends(get_db),
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
-def create_post(post: schemas.PostCreate, db: Session = Depends(get_db),
+async def create_post(post: schemas.PostCreate, db: Session = Depends(get_db),
                 current_user: int = Depends(oauth2.get_current_user)):
 
     # cursor.execute(f"""insert into posts (title, content) values('{post.title}', '{post.content}')""")
@@ -62,7 +62,7 @@ def create_post(post: schemas.PostCreate, db: Session = Depends(get_db),
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_post(id: int, db: Session = Depends(get_db),
+async def delete_post(id: int, db: Session = Depends(get_db),
                 current_user: int = Depends(oauth2.get_current_user)):
 
     # index = find_index_post(id)
@@ -84,7 +84,7 @@ def delete_post(id: int, db: Session = Depends(get_db),
 
 
 @router.put("/{id}", response_model=schemas.Post)
-def update_post(id: int, update_post: schemas.PostCreate, db: Session = Depends(get_db),
+async def update_post(id: int, update_post: schemas.PostCreate, db: Session = Depends(get_db),
                 current_user: int = Depends(oauth2.get_current_user)):
 
     # index = find_index_post(id)
